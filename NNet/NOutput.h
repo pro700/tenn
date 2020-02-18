@@ -21,6 +21,7 @@ protected:
 	NInput* activeLinkedInputPtr;
 
 	float Ve;
+	float AvgErr;
 
 public:
 	NOutput(NObject* _pObject);
@@ -28,6 +29,11 @@ public:
 
 protected:
 	void Link(NInput* pInput);
+	void MakeActive(NInput* pInput);
 	bool IsLinked(NInput* pInput);
+	float GetVe() { return Ve; };
+	float GetB() { return B; }
+	void SetVe(float Ve);
+
 };
 

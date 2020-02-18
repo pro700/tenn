@@ -17,8 +17,15 @@ protected:
 
 	float A;
 
+	float Ve;
+	float VeAvgErr;
+
 	std::vector<NOutput*> linkedOutputPtrs;
+	std::vector<NOutput*> activeLinkedOutputPtrs;
 	NOutput* activeLinkedOutputPtr;
+
+	float Vb;
+	float AvgErr;
 
 public:
 	NInput(NObject* _pObject);
@@ -27,6 +34,9 @@ public:
 protected:
 	void Link(NOutput* pOutput);
 	bool IsLinked(NOutput* pOutput);
-
+	float GetVeOrA();
+	float GetVb() { return Vb; }
+	void SetVb(float vb) { Vb = vb; }
+	void DeltaVeOrA(float da);
 };
 

@@ -5,13 +5,13 @@
 #include "NOutput.h"
 #include "NInput.h"
 
-
 /////////////////////////////////////////////////////////
 NOutput::NOutput(NObject* _pObject)
 	: pObject(_pObject)
 	, B(0)
 	, linkedInputPtrs(0)
 	, activeLinkedInputPtr(NULL)
+	, Ve(0)
 {
 }
 
@@ -21,6 +21,21 @@ NOutput::~NOutput()
 }
 
 /////////////////////////////////////////////////////////
+//void NOutput::Link(NInput* pInput)
+//{
+//	//assert(!IsLinked(pInput));
+//
+//	this->linkedInputPtrs.push_back(pInput);
+//	pInput->linkedOutputPtrs.push_back(this);
+//
+//	if (activeLinkedInputPtr == NULL && pInput->activeLinkedOutputPtr == NULL)
+//	{
+//		activeLinkedInputPtr = pInput;
+//		pInput->activeLinkedOutputPtr = this;
+//	}
+//}
+
+/////////////////////////////////////////////////////////
 void NOutput::Link(NInput* pInput)
 {
 	//assert(!IsLinked(pInput));
@@ -28,20 +43,46 @@ void NOutput::Link(NInput* pInput)
 	this->linkedInputPtrs.push_back(pInput);
 	pInput->linkedOutputPtrs.push_back(this);
 
-	if (activeLinkedInputPtr == NULL && pInput->activeLinkedOutputPtr == NULL)
+	if (activeLinkedInputPtr == NULL)
 	{
 		activeLinkedInputPtr = pInput;
-		pInput->activeLinkedOutputPtr = this;
+		pInput->activeLinkedOutputPtrs.push_back(this);
 	}
+}
+
+/////////////////////////////////////////////////////////
+void NOutput::SetVe(float Ve) 
+{
+	this->Ve = Ve;
+
+	if (AvgErr <= activeLinkedInputPtr->VeAvgErr)
+	{
+		activeLinkedInputPtr->Ve = Ve;
+		activeLinkedInputPtr->VeAvgErr = AvgErr;
+	}
+}
+
+/////////////////////////////////////////////////////////
+void NOutput::MakeActive(NInput* pInput)
+{
+	////assert(!IsLinked(pInput));
+	//assert(pInput->activeLinkedOutputPtr == NULL || pInput->activeLinkedOutputPtr == this);
+
+	//if(activeLinkedInputPtr != NULL)
+	//	activeLinkedInputPtr->activeLinkedOutputPtr = NULL;
+
+	//activeLinkedInputPtr = pInput;
+	//activeLinkedInputPtr->activeLinkedOutputPtr = this;
 }
 
 /////////////////////////////////////////////////////////
 bool NOutput::IsLinked(NInput* pInput)
 {
-	for (int n = 0; n < linkedInputPtrs.size(); n++)
+	for (NInput*& InputPtr : linkedInputPtrs)
 	{
-		if (linkedInputPtrs[n] == pInput)
+		if (InputPtr == pInput)
 			return true;
 	}
 	return false;
 }
+

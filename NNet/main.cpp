@@ -20,10 +20,12 @@ int main()
 
 	NField field(100);
 
-	NBlock block(&field, 100, 100, 100);
+	NBlock block(&field, 300, 300, 300);
 
 	std::clock_t start = std::clock();
-	block.Link();
+	double duration0 = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+	start = std::clock();
+  	block.Link();
 	double duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 
 	start = std::clock();
@@ -37,6 +39,7 @@ int main()
 	block.Count(countOfInputs, countOfLinks, countOfActiveLinks);
 
 	std::cout << "Hello World!" << std::endl;
+	std::cout << "duration0=" << duration0 << std::endl;
 	std::cout << "duration=" << duration << std::endl;
 	std::cout << "duration1=" << duration1 << std::endl;
 	std::cout << "countOfInputs=" << countOfInputs << std::endl;

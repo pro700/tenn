@@ -26,11 +26,14 @@ protected:
 
 public:
 	void Link(NObject& dstObject);
+	void Link(NInput& dstInput);
 	void Eval();
+	float GetVe();
+	void SetVb(float Vb);
+	void Back();
 
 	void Count(int& countOfInputs, int& countOfLinks, int& countOfActiveLinks);
 
 	int GetCountOfLinks() { return output.linkedInputPtrs.size(); }
-
 };
 
